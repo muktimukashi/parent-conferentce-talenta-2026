@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presentasi Talenta</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(255,255,255,.08);
+      --panel-strong: rgba(255,255,255,.13);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #38bdf8;
+      --accent-2: #a78bfa;
+      --accent-3: #34d399;
+      --line: rgba(255,255,255,.14);
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.18), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(167,139,250,.18), transparent 34%),
+        var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: clamp(24px, 5vw, 72px);
+      display: grid;
+      align-content: center;
+      opacity: 0;
+      transform: translateX(40px) scale(.985);
+      pointer-events: none;
+      transition: .45s ease;
+    }
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: .95;
+      max-width: 1000px;
+      margin-bottom: 22px;
+    }
+    h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.05;
+      margin-bottom: 26px;
+    }
+    .lead {
+      max-width: 900px;
+      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .hero-card, .card, .timeline-item {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: clamp(24px, 4vw, 44px);
+      border-radius: 28px;
+      max-width: 1100px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    .card {
+      border-radius: 22px;
+      padding: 24px;
+      min-height: 260px;
+    }
+    .card h3 { font-size: 1.4rem; margin-bottom: 14px; }
+    .card ul { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.75; }
+    .card.programming { border-top: 4px solid var(--accent); }
+    .card.music { border-top: 4px solid var(--accent-3); }
+    .card.art { border-top: 4px solid var(--accent-2); }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .stat {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: 24px;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(56,189,248,.2), rgba(167,139,250,.16));
+      border: 1px solid var(--line);
+    }
+    .stat strong { font-size: clamp(3rem, 8vw, 6rem); display: block; }
+    .stat span { color: var(--muted); }
+
+    .report-list {
+      display: grid;
+      gap: 14px;
+    }
+    .report-item {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .report-item b { color: var(--text); }
+
+    .timeline {
+      display: grid;
+      gap: 13px;
+      max-width: 1100px;
+    }
+    .timeline-item {
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+    .date {
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .timeline-item:nth-child(2) .date,
+    .timeline-item:nth-child(5) .date { color: var(--accent-3); }
+    .timeline-item:nth-child(3) .date,
+    .timeline-item:nth-child(6) .date { color: var(--accent-2); }
+
+    .closing {
+      text-align: center;
+      max-width: 900px;
+      margin: auto;
+    }
+    .closing h2 { font-size: clamp(2.5rem, 7vw, 6rem); }
+    .pill {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      margin-top: 22px;
+    }
+
+    .controls {
+      position: fixed;
+      z-index: 20;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(7,17,31,.78);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+    button {
+      border: 0;
+      color: white;
+      background: var(--panel-strong);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    button:hover { background: rgba(255,255,255,.2); }
+    .counter {
+      min-width: 64px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 4px;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      z-index: 30;
+      transition: width .3s ease;
+    }
+
+    @media (max-width: 850px) {
+      body { overflow: auto; }
+      .deck { min-height: 100vh; height: auto; }
+      .slide {
+        position: relative;
+        min-height: 100vh;
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+        display: grid;
+      }
+      .controls, .progress { display: none; }
+      .grid, .split { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; gap: 4px; }
+    }
+
+    @media print {
+      body { overflow: visible; background: white; color: black; }
+      .deck { height: auto; }
+      .slide {
+        position: relative;
+        min-height: 100vh;
+        opacity: 1;
+        transform: none;
+        page-break-after: always;
+        color: black;
+        background: white;
+      }
+      .controls, .progress { display: none; }
+      .hero-card, .card, .timeline-item, .report-item, .stat {
+        color: black;
+        background: #f8fafc;
+        box-shadow: none;
+        border-color: #dbe3ee;
+      }
+      .lead, .card ul, .report-item, .stat span { color: #334155; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <main class="deck">
+    <section class="slide active">
+      <div class="hero-card">
+        <div class="eyebrow">Program Pengembangan Siswa</div>
+        <h1>Talenta</h1>
+        <p class="lead">
+          Wadah belajar untuk mengembangkan pengetahuan, pengalaman, kreativitas,
+          kemandirian, dan kemampuan berkolaborasi melalui proses yang nyata dan bermakna.
+        </p>
+        <div class="pill">Belajar • Berkarya • Berkolaborasi</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="eyebrow">01 — Tentang Talenta</div>
+      <h2>Lebih dari sekadar keterampilan teknis</h2>
+      <div class="split">
+        <div class="hero-card">
+          <p class="lead">
+            Talenta dirancang sebagai ruang belajar yang memberi kesempatan kepada siswa
+            untuk mengeksplorasi minat, memperoleh pengetahuan baru, mencoba berbagai peran,
+            dan membangun pengalaman kolaborasi.
+          </p>
+          <p class="lead">
+            Fokusnya bukan hanya pada hasil teknis, tetapi juga pada proses berpikir,
+            komunikasi, tanggung jawab, kreativitas, dan kemampuan bekerja bersama.
+          </p>
+        </div>
+        <div class="stat">
+          <div>
+            <strong>3</strong>
+            <span>bidang utama pengembangan Talenta</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="eyebrow">02 — Materi Talenta</div>
+      <h2>Bidang yang akan dikembangkan</h2>
+      <div class="grid">
+        <article class="card programming">
+          <h3>Programming</h3>
+          <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>CMS: WordPress</li>
+          </ul>
+        </article>
+
+        <article class="card music">
+          <h3>Musik</h3>
+          <ul>
+            <li>Teori dasar musik</li>
+            <li>Solfegio</li>
+            <li>Instrumen</li>
+            <li>Ansambel</li>
+            <li>Aransemen</li>
+          </ul>
+        </article>
+
+        <article class="card art">
+          <h3>Seni Digital</h3>
+          <ul>
+            <li>Desain grafis</li>
+            <li>Motion graphics</li>
+            <li>Komputer grafis</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="eyebrow">03 — Laporan Pencapaian</div>
+      <h2>Evaluasi proses dan perkembangan siswa</h2>
+      <div class="report-list">
+        <div class="report-item"><b>Laporan narasi</b> untuk menggambarkan proses belajar, kekuatan, dan perkembangan siswa.</div>
+        <div class="report-item"><b>Nilai</b> berdasarkan rubrik capaian pembelajaran.</div>
+        <div class="report-item"><b>Talent Story </b>presentasi siswa pada Level 7 dan Level 9.</div>
+        <div class="report-item"><b>Sidang Akhir </b>presentasi sidang karya akhir Level 9.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="eyebrow">04 — Alur Asesmen</div>
+      <h2>Jadwal asesmen dan pemilihan jurusan</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="date">20 Juli 2026</div>
+          <div>Pemaparan Kurikulum Talenta</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">22, 27, dan 29 Juli 2026</div>
+          <div>Proses asesmen atau trial jurusan Talenta</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">30 Juli 2026</div>
+          <div>Penyampaian surat rekomendasi pemilihan jurusan</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">30–31 Juli 2026</div>
+          <div>Pengisian surat pemilihan jurusan oleh siswa dan orang tua</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">31 Juli 2026</div>
+          <div>Pengembalian formulir surat oleh orang tua</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">3 Agustus 2026</div>
+          <div>KBM Talenta dimulai</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Navigasi slide">
+    <button id="prev" aria-label="Slide sebelumnya">←</button>
+    <div class="counter"><span id="current">1</span> / <span id="total">6</span></div>
+    <button id="next" aria-label="Slide berikutnya">→</button>
+  </nav>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const currentEl = document.getElementById('current');
+    const totalEl = document.getElementById('total');
+    const progress = document.getElementById('progress');
+    let index = 0;
+
+    totalEl.textContent = slides.length;
+
+    function showSlide(newIndex) {
+      index = (newIndex + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+      currentEl.textContent = index + 1;
+      progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+    }
+
+    document.getElementById('next').addEventListener('click', () => showSlide(index + 1));
+    document.getElementById('prev').addEventListener('click', () => showSlide(index - 1));
+
+    document.addEventListener('keydown', (event) => {
+      if (['ArrowRight', 'PageDown', ' '].includes(event.key)) showSlide(index + 1);
+      if (['ArrowLeft', 'PageUp'].includes(event.key)) showSlide(index - 1);
+      if (event.key === 'Home') showSlide(0);
+      if (event.key === 'End') showSlide(slides.length - 1);
+    });
+
+    let startX = null;
+    document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    document.addEventListener('touchend', e => {
+      if (startX === null) return;
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 50) showSlide(index + (diff < 0 ? 1 : -1));
+      startX = null;
+    });
+
+    showSlide(0);
+  </script>
+</body>
+</html>
