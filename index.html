@@ -89,10 +89,14 @@
       max-width: 1100px;
     }
 
-    .grid {
+    .grid, .teacher-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 18px;
+    }
+    .grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .teacher-grid {
+      grid-template-columns: repeat(6, minmax(0,1fr));
+      max-width: 1180px;
     }
 
     .card {
@@ -106,23 +110,42 @@
     .card.music { border-top: 4px solid var(--accent-3); }
     .card.art { border-top: 4px solid var(--accent-2); }
 
-    .split {
+    .teacher-card {
       display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 24px;
-      align-items: stretch;
+      justify-items: center;
+      text-align: center;
+      gap: 12px;
+      min-height: 250px;
     }
-    .stat {
+    .avatar {
+      width: clamp(112px, 10vw, 148px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,.18);
+      box-shadow: 0 16px 40px rgba(0,0,0,.28);
+      background: var(--panel-strong);
+    }
+    .avatar-placeholder {
       display: grid;
       place-items: center;
-      text-align: center;
-      border-radius: 24px;
-      padding: 32px;
-      background: linear-gradient(135deg, rgba(56,189,248,.2), rgba(167,139,250,.16));
-      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 2.7rem;
+      font-weight: 900;
+      background:
+        linear-gradient(135deg, rgba(56,189,248,.32), rgba(52,211,153,.24)),
+        var(--panel-strong);
     }
-    .stat strong { font-size: clamp(3rem, 8vw, 6rem); display: block; }
-    .stat span { color: var(--muted); }
+    .teacher-card h3 {
+      margin: 0;
+      font-size: 1.08rem;
+    }
+    .teacher-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: .95rem;
+    }
 
     .report-list {
       display: grid;
@@ -159,12 +182,6 @@
     .timeline-item:nth-child(3) .date,
     .timeline-item:nth-child(6) .date { color: var(--accent-2); }
 
-    .closing {
-      text-align: center;
-      max-width: 900px;
-      margin: auto;
-    }
-    .closing h2 { font-size: clamp(2.5rem, 7vw, 6rem); }
     .pill {
       display: inline-flex;
       gap: 10px;
@@ -220,6 +237,10 @@
       transition: width .3s ease;
     }
 
+    @media (max-width: 1100px) {
+      .teacher-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
     @media (max-width: 850px) {
       body { overflow: auto; }
       .deck { min-height: 100vh; height: auto; }
@@ -232,7 +253,7 @@
         display: grid;
       }
       .controls, .progress { display: none; }
-      .grid, .split { grid-template-columns: 1fr; }
+      .grid, .teacher-grid { grid-template-columns: 1fr; }
       .timeline-item { grid-template-columns: 1fr; gap: 4px; }
     }
 
@@ -249,13 +270,13 @@
         background: white;
       }
       .controls, .progress { display: none; }
-      .hero-card, .card, .timeline-item, .report-item, .stat {
+      .hero-card, .card, .timeline-item, .report-item {
         color: black;
         background: #f8fafc;
         box-shadow: none;
         border-color: #dbe3ee;
       }
-      .lead, .card ul, .report-item, .stat span { color: #334155; }
+      .lead, .card ul, .report-item, .teacher-card p { color: #334155; }
     }
   </style>
 </head>
@@ -276,31 +297,7 @@
     </section>
 
     <section class="slide">
-      <div class="eyebrow">01 — Tentang Talenta</div>
-      <h2>Lebih dari sekadar keterampilan teknis</h2>
-      <div class="split">
-        <div class="hero-card">
-          <p class="lead">
-            Talenta dirancang sebagai ruang belajar yang memberi kesempatan kepada siswa
-            untuk mengeksplorasi minat, memperoleh pengetahuan baru, mencoba berbagai peran,
-            dan membangun pengalaman kolaborasi.
-          </p>
-          <p class="lead">
-            Fokusnya bukan hanya pada hasil teknis, tetapi juga pada proses berpikir,
-            komunikasi, tanggung jawab, kreativitas, dan kemampuan bekerja bersama.
-          </p>
-        </div>
-        <div class="stat">
-          <div>
-            <strong>3</strong>
-            <span>bidang utama pengembangan Talenta</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide">
-      <div class="eyebrow">02 — Materi Talenta</div>
+      <div class="eyebrow">01 — Materi Talenta</div>
       <h2>Bidang yang akan dikembangkan</h2>
       <div class="grid">
         <article class="card programming">
@@ -332,6 +329,60 @@
             <li>Motion graphics</li>
             <li>Komputer grafis</li>
           </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="eyebrow">02 — Tim Guru Talenta</div>
+      <h2>Guru pendamping setiap bidang</h2>
+      <div class="teacher-grid">
+        <article class="card teacher-card music">
+          <img class="avatar" src="asset/Kak Fuad.jpg" alt="Foto Kak Fuad">
+          <div>
+            <h3>Kak Fuad</h3>
+            <p>Guru Bunyi & Musik</p>
+          </div>
+        </article>
+
+        <article class="card teacher-card music">
+          <img class="avatar" src="asset/Kak Fitra.jpg" alt="Foto Kak Fitra">
+          <div>
+            <h3>Kak Fitra</h3>
+            <p>Guru Bunyi & Musik</p>
+          </div>
+        </article>
+
+        <article class="card teacher-card music">
+          <div class="avatar avatar-placeholder" aria-label="Avatar dummy Kak Feri">F</div>
+          <div>
+            <h3>Kak Feri</h3>
+            <p>Guru Bunyi & Musik</p>
+          </div>
+        </article>
+
+        <article class="card teacher-card art">
+          <img class="avatar" src="asset/Kak Kur.jpg" alt="Foto Kak Kur">
+          <div>
+            <h3>Kak Kur</h3>
+            <p>Guru Seni Digital & Media</p>
+          </div>
+        </article>
+
+        <article class="card teacher-card programming">
+          <img class="avatar" src="asset/Kak Mukti.jpg" alt="Foto Kak Mukti">
+          <div>
+            <h3>Kak Mukti</h3>
+            <p>Guru Programming</p>
+          </div>
+        </article>
+
+        <article class="card teacher-card programming">
+          <img class="avatar" src="asset/Kak Avi.jpg" alt="Foto Kak Avi">
+          <div>
+            <h3>Kak Avi</h3>
+            <p>Guru Programming</p>
+          </div>
         </article>
       </div>
     </section>
@@ -381,7 +432,7 @@
 
   <nav class="controls" aria-label="Navigasi slide">
     <button id="prev" aria-label="Slide sebelumnya">←</button>
-    <div class="counter"><span id="current">1</span> / <span id="total">6</span></div>
+    <div class="counter"><span id="current">1</span> / <span id="total">5</span></div>
     <button id="next" aria-label="Slide berikutnya">→</button>
   </nav>
 
